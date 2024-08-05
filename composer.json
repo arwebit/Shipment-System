@@ -1,0 +1,5 @@
+{
+    "require": {
+        "devker/vaults": "^1.0"
+    }
+}
