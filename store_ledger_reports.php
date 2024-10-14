@@ -1,5 +1,5 @@
 <?php
-$pageName = "Party Ledger Report";
+$pageName = "Store Ledger Report";
 require_once "./top.inc.php";
 
 use Devker\Vaults\Vaults;
@@ -25,40 +25,21 @@ use Devker\Vaults\Vaults;
                                 <div class="card-body">
                                     <form action="" method="post">
                                     <div class="row">
-                                        <div class="col-lg-4">
-                                        <label for="paty_name">Party Name <b class="text-danger">*
-                                                                <?php echo $partyErr; ?>
-                                                            </b></label>
-                                            <select name="party_id" class="form-control" required>
-                                            <option value="">Select party name</option>
-                                                            <?php
-$partySQL = "SELECT * FROM party_list";
-$query = mysqli_query($connection, $partySQL);
-while ($row = mysqli_fetch_assoc($query)) {
-    ?>
-                                                                <option value="<?php echo $row['party_id']; ?>" >
-                                                                    <?php echo $row['party_name']; ?>
-                                                                </option>
-                                                                <?php
-}?>
-
-                                            </select>
-                                        </div>
-                                        <div class="col-lg-4">
+                                        <div class="col-lg-6">
                                         <label for="from_date">From date <b class="text-danger">*
                                                                 <?php echo $fromDateErr; ?>
                                                             </b></label>
                                             <input type="date" name="from_date" class="form-control" placeholder="From date" required>
                                         </div>
 
-                                        <div class="col-lg-4">
+                                        <div class="col-lg-6">
                                         <label for="to_date">To date<b class="text-danger"> *
                                                                 <?php echo $toDateErr; ?>
                                                             </b></label>
                                                             <input type="date" name="to_date" class="form-control" placeholder="To date" required>
                                         </div>
                                       <div class="row" style="margin-top: 15px;">
-                                      <div class="col-lg-4">
+                                      <div class="col-lg-12">
                                             <button class="btn btn-primary" name="get_report" type="submit">Get report</button>
                                         </div>
                                       </div>
@@ -74,7 +55,6 @@ if (isset($_REQUEST['get_report'])) {
     $error = 0;
     $fromDate = mysqli_real_escape_string($connection, Vaults::removeHTMLEntities(trim($_REQUEST['from_date'])));
     $toDate = mysqli_real_escape_string($connection, Vaults::removeHTMLEntities(trim($_REQUEST['to_date'])));
-    $partyID = mysqli_real_escape_string($connection, Vaults::removeHTMLEntities(trim($_REQUEST['party_id'])));
 
     if (empty($fromDate)) {
         $fromDateErr = "Required";
@@ -88,10 +68,7 @@ if (isset($_REQUEST['get_report'])) {
     } else {
         $toDate = date("Y-m-d", strtotime($toDate));
     }
-    if (empty($partyID)) {
-        $partyErr = "Required";
-        $error = 1;
-    }
+
     ?>
                     <div class="row">
                     <div class="col-12 col-lg-12">
@@ -99,16 +76,12 @@ if (isset($_REQUEST['get_report'])) {
 
         <?php
 if ($error === 0) {
-        $partyID = trim($_REQUEST['party_id']);
-        $sql = "SELECT * FROM party_list WHERE party_id='$partyID'";
+        $sql = "SELECT SUM(opening_balance) opening_balance FROM party_list";
         $query = mysqli_query($connection, $sql);
         while ($row = mysqli_fetch_assoc($query)) {
-            $partyName = $row['party_name'];
-            $partyMobile = $row['party_mobile'] == "0" ? "N/A" : $row['party_mobile'];
-            $partyAddress = $row['party_address'];
             $openingBalance = $row['opening_balance'];
         }
-        $sqlSum = "SELECT SUM(debit) AS debit, SUM(credit) AS credit FROM ledger WHERE party_id = '$partyID' AND transaction_date<'$fromDate'";
+        $sqlSum = "SELECT SUM(debit) AS debit, SUM(credit) AS credit FROM ledger WHERE transaction_date<'$fromDate'";
         $querySum = mysqli_query($connection, $sqlSum);
         while ($rowSum = mysqli_fetch_assoc($querySum)) {
             $debit = $rowSum['debit'];
@@ -130,7 +103,7 @@ if ($error === 0) {
           <tr class="header_color">
             <td class="header_info">
                 <div style="text-align: center;">
-<h2><?php echo $companyName; ?></h2>
+<h2><?php echo $storeName; ?></h2>
 <h3><?php echo $companyAddress; ?>, <?php echo $companyCityCountry; ?>, Pin: <?php echo $companyPinCode; ?></h3>
 <h5>Mobile: <?php echo $companyMobile; ?>, Email: <?php echo $companyEmail; ?></h5>
                 </div>
@@ -141,14 +114,12 @@ if ($error === 0) {
               <table style="width: 100%">
                 <tr class="table-info">
                   <td style="width: 50%; padding-left: 20px">
-                    <b>Party Name :</b> <?php echo $partyName; ?><br />
-                    <b>Party Mobile :</b> <?php echo $partyMobile; ?><br />
-                    <b>Party Address :</b> <?php echo $partyAddress; ?><br />
-                  </td>
-                  <td style="width: 45%; padding-right: 20px">
-                    <b>Report Generated :</b> From <?php echo date("d-m-Y", strtotime($fromDate)); ?> To <?php echo date("d-m-Y", strtotime($toDate)); ?><br />
+                  <b>Report Generated :</b> From <?php echo date("d-m-Y", strtotime($fromDate)); ?> To <?php echo date("d-m-Y", strtotime($toDate)); ?><br />
                     <b>Opening Balance (as on <?php echo date("d-m-Y", strtotime($fromDate)); ?>) : &#8377;</b><?php echo $obAsOnDate; ?> <br />
-                    <b>Printed on :</b> <?php echo date("d-m-Y"); ?>
+
+                  </td>
+                  <td style="width: 45%; padding-right: 20px; vertical-align:top;">
+                  <b>Printed on :</b> <?php echo date("d-m-Y"); ?>
                   </td>
                 </tr>
               </table>
@@ -184,7 +155,7 @@ if ($error === 0) {
     </thead>
     <tbody >
         <?php
-$gatepassSQL = "SELECT * FROM ledger WHERE party_id = '$partyID' AND transaction_date BETWEEN '$fromDate' AND '$toDate' ORDER BY transaction_date";
+$gatepassSQL = "SELECT * FROM ledger WHERE transaction_date BETWEEN '$fromDate' AND '$toDate' ORDER BY transaction_date";
         $gatepassQuery = mysqli_query($connection, $gatepassSQL);
         $balance = $obAsOnDate;
         $credit = 0;
@@ -211,13 +182,15 @@ $gatepassSQL = "SELECT * FROM ledger WHERE party_id = '$partyID' AND transaction
 
     </tbody>
 </table>
+
+
 <div style="margin-top: 10px;">
 <b>Opening balance as on <?php echo date("jS F, Y", strtotime($fromDate)) ?>: &#8377;<?php echo $obAsOnDate; ?></b><br>
     <b>Total Credit (From <?php echo date("d-m-Y", strtotime($fromDate)); ?> to  <?php echo date("d-m-Y", strtotime($toDate)); ?>) : &#8377;<?php echo $credit; ?></b><br/>
     <b>Total Debit (From <?php echo date("d-m-Y", strtotime($fromDate)); ?> to  <?php echo date("d-m-Y", strtotime($toDate)); ?>) : &#8377;<?php echo $debit; ?></b><br/>
-    <b> Closing balance as on <?php echo date("jS F, Y", strtotime($toDate)) ?> : &#8377; <?php echo $balance; ?>
+<b> Closing balance as on <?php echo date("jS F, Y", strtotime($toDate)) ?> : &#8377;<?php echo $balance; ?>
 </b><br/>
-<b><?php echo $balance >= 0 ? "$partyName has due amount" : "$partyName paid exccess amount" ?> till <?php echo date("jS F, Y", strtotime($toDate)) ?> : &#8377;<?php echo abs($balance); ?>
+<b><?php echo $balance >= 0 ? "$storeName has to recieve " : "$storeName receive excess amount " ?> till <?php echo date("jS F, Y", strtotime($toDate)) ?> : &#8377;<?php echo abs($balance); ?>
 </b>
 </div>
 

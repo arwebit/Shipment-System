@@ -187,8 +187,25 @@ if ($error === 0) {
         <?php
 $gatepassSQL = "SELECT * FROM gatepass WHERE party_id = '$partyID' AND delivery_date BETWEEN '$fromDate' AND '$toDate' ORDER BY delivery_date DESC";
         $gatepassQuery = mysqli_query($connection, $gatepassSQL);
-        $balance = $obAsOnDate;
+        $totWeight = 0;
+        $totPackage = 0;
+        $totToPay = 0;
+        $totReceive = 0;
+        $totDiscount = 0;
+
         while ($row = mysqli_fetch_assoc($gatepassQuery)) {
+
+            $package = (double) $row['package'];
+            $weight = (double) $row['weight'];
+            $toPay = (double) $row['to_pay_amount'];
+            $receive = (double) $row['receive_amount'];
+            $discount = (double) $row['discount_amount'];
+
+            $totPackage = $package + $totPackage;
+            $totWeight = $weight + $totWeight;
+            $totToPay = $toPay + $totToPay;
+            $totReceive = $receive + $totReceive;
+            $totDiscount = $discount + $totDiscount;
             ?>
         <tr>
            <td style="text-align:center"><?php echo $row['gatepass_id']; ?></td>
@@ -206,6 +223,12 @@ $gatepassSQL = "SELECT * FROM gatepass WHERE party_id = '$partyID' AND delivery_
 }
         ?>
      <tr>
+        <th colspan="5">Total</th>
+        <th style="text-align:center"><?php echo (double) $totPackage; ?></th>
+        <th style="text-align:center"><?php echo (double) $totWeight; ?></th>
+        <th style="text-align:center"><?php echo (double) round($totToPay, 2); ?></th>
+        <th style="text-align:center"><?php echo (double) round($totReceive, 2); ?></th>
+        <th style="text-align:center"><?php echo (double) round($totDiscount, 2); ?></th>
 </tr>
     </tbody>
 </table>
@@ -214,9 +237,9 @@ $gatepassSQL = "SELECT * FROM gatepass WHERE party_id = '$partyID' AND delivery_
         </tbody>
         <!--  -->
 
-        <div class="report_footer">
-        <div style="text-align: center;">&copy; <?php echo $companyCopyRight; ?></div>
-</div>
+        <!-- <div class="report_footer">
+        <div style="text-align: center;">&copy; <?php //echo $companyCopyRight; ?></div>
+</div> -->
       </table>
     </div>
 </div>

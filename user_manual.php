@@ -2,6 +2,88 @@
 $pageName = "User Manual";
 require_once "./top.inc.php";
 ?>
+<style type="text/css">
+
+.header_image,
+.footer_image {
+  width: 100%;
+}
+.img_hidden {
+    visibility: hidden;
+  }
+
+  div.report_footer{
+    background-color: #cec9c9;
+    visibility: hidden;
+  }
+  thead tr td.header_info{
+    display: none;
+    padding-bottom: 40px;
+  }
+  .header_color{
+    background-color: #cec9c9;
+  }
+@media print {
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  .body_container {
+    width: 102%;
+    position: relative;
+    margin-bottom: 150px;
+  }
+
+  .body_content {
+    width: 100%;
+    margin-top: 260px;
+    page-break-after: always;
+  }
+  table td.border_right {
+    border-right: 1px solid rgb(211, 208, 208);
+  }
+
+  .header_image {
+    height: auto;
+  }
+
+  .footer_image {
+    height: auto;
+  }
+  thead tr td.header_info{
+    display: block;
+  }
+  .img_hidden {
+    visibility: hidden;
+  }
+  div.report_footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    z-index: -1;
+    visibility: visible;
+  }
+
+  table {
+    page-break-inside: auto;
+  }
+  thead {
+    display: table-header-group;
+  }
+  tfoot {
+    display: table-footer-group;
+  }
+}
+
+</style>
 <div class="wrapper">
 
     <?php require_once "./sidebar.inc.php";?>
@@ -118,25 +200,62 @@ require_once "./top.inc.php";
                                   </div>
 
                              </p>
-
                              <p>
-                             <b>E. Reports</b>
+<b>E. Company</b>
+<div>Company details entry/edit/delete can be done. There are 4 (four) fields:
+    <ol>
+        <li>Company Name (Mandatory).</li>
+        <li>Company Mobile (Optional). </li>
+        <li>Company Address (Mandatory).</li>
+        <li>Opening Balance (Mandatory).<br/>
+<b>N.B.:</b>
+<ul>
+<li>The opening balance amount must be based on the date prior to the party's registration date.</li>
+    <li>If there is no opening balance amount, put <b>0</b> in the field.</li>
+    <li>Positive opening balance : Company has due amount.</li>
+    <li>Negetive opening balance : Company paid excess amount.</li>
+    <li>Please try to avoid changing the opening balance after entry, as it will effect the ledger accounts.</li>
+</ul>
+
+    </li>
+    </ol>
+</div>
+
+<div style="margin-left:20px;">
+<b>E.1. Expenses</b>
+<p style="margin-left:10px;">
+    After adding company, Expenses entry/edit/delete can be done. First, search the company, and then click on <b>Expense</b>, and then <b>Add</b>. You can view all the expenses generated for that party. There are 4 (four) fields :
+        <ol>
+            <li>Particulars (Mandatory) </li>
+            <li>Debit (Mandatory) -- Cannot be less than or equal to <b>0</b>. </li>
+            <li>Credit (Mandatory) -- Cannot be less than or equal to <b>0</b>.</li>
+            <li>Transaction Date (Mandatory) -- Default is current (today) date.</li>
+        </ol>
+</p>
+</div>
+                             </p>
+                             <p>
+                             <b>F. Reports</b>
                              <div style="margin-left:10px;">
-                                    <b>E.1. Party Ledger Report</b>
+                                    <b>F.1. Party Ledger Report</b>
                                     <p style="margin-left:10px;">
 This is the party accounts report. It shows the party ledger. To generate the report, provide: <b>Party name</b>, <b>From Date</b> and <b>To Date</b>.
                                     </p>
-                                    <b>E.2. Company Ledger Report</b>
+                                    <b>F.2. Store Ledger Report</b>
                                     <p style="margin-left:10px;">
-                                    This is the company accounts report. It shows the company ledger. To generate the report, provide: <b>From Date</b> and <b>To Date</b>.
+                                    This is the store accounts report. It shows the company ledger. To generate the report, provide: <b>From Date</b> and <b>To Date</b>.
                                     </p>
-                                    <b>E.3. Gatepass Report</b>
+                                    <b>F.3. Gatepass Report</b>
                                     <p style="margin-left:10px;">
                                     This report shows the gatepasses generated. To generate the report, provide: <b>Party name</b>, <b>From Date</b> and <b>To Date</b>.
                                     </p>
-                                    <b>E.4. Party Report</b>
+                                    <b>F.4. Party Report</b>
                                     <p style="margin-left:10px;">
                                     This report shows all the party list along with their dues/excess amount till current date.
+                                    </p>
+                                    <b>F.5. Company Ledger Report</b>
+                                    <p style="margin-left:10px;">
+This is the company accounts report. It shows the party ledger. To generate the report, provide: <b>Party name</b>, <b>From Date</b> and <b>To Date</b>.
                                     </p>
                              </div>
                              </p>

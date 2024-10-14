@@ -110,7 +110,7 @@ $gatepassSQL = "SELECT * FROM gatepass WHERE party_id = '$partyID'";
             <td><?php echo $row['weight']; ?></td>
             <td>
                 <a href="manage_gatepass.php?gatepass_id=<?php echo $row['gatepass_id']; ?>">Edit</a> ||
-                <a href="view_gatepass.php?gatepass_id=<?php echo $row['gatepass_id']; ?>">View</a> ||
+                <a target="_blank" href="view_gatepass.php?gatepass_id=<?php echo $row['gatepass_id']; ?>">View</a> ||
                 <a href="javascript:void(0)" onclick="confirmDeletion('<?php echo $row['gatepass_id']; ?>')">Delete</a>
             </td>
         </tr>
