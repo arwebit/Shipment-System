@@ -20,11 +20,17 @@
                     </a>
 
                 </li>
+                <?php
+if ($loginUserRole === 1) {
+    ?>
                 <li class="sidebar-item <?php echo $pageName === 'Manage Users' ? 'active' : '' ?>">
               <a class="sidebar-link" href="manage_users.php">
                         <i class="align-middle" data-feather="user"></i> <span class="align-middle">Users</span>
                     </a>
               </li>
+              <?php
+}
+?>
 
 
             <li class="sidebar-header">
@@ -35,11 +41,17 @@
                     <i class="align-middle" data-feather="users"></i> <span class="align-middle">Party</span>
                 </a>
             </li>
+            <li class="sidebar-item <?php echo $pageName === 'Manage Company' ? 'active' : '' ?>">
+                <a class="sidebar-link" href="manage_company.php">
+                    <i class="align-middle" data-feather="home"></i> <span class="align-middle">Company</span>
+                </a>
+            </li>
             <li class="sidebar-item <?php echo $pageName === 'Gatepass, Payment and Goods Entry' ? 'active' : '' ?>">
                 <a class="sidebar-link" href="gatepass_payment_goods_entry.php">
                     <i class="align-middle" data-feather="list"></i> <span class="align-middle">Gatepass, Payment and Goods Entry</span>
                 </a>
             </li>
+
             <li class="sidebar-header">
                 Reports
             </li>
@@ -49,8 +61,13 @@
                 </a>
             </li>
             <li class="sidebar-item <?php echo $pageName === 'Company Ledger Report' ? 'active' : '' ?>">
-                <a class="sidebar-link" href="ledger_reports.php">
-                    <i class="align-middle" data-feather="hash"></i> <span class="align-middle">Company Ledger Report</span>
+                <a class="sidebar-link" href="company_ledger_reports.php">
+                    <i class="align-middle" data-feather="hash"></i> <span class="align-middle">Company Expense  Report</span>
+                </a>
+            </li>
+            <li class="sidebar-item <?php echo $pageName === 'Store Ledger Report' ? 'active' : '' ?>">
+                <a class="sidebar-link" href="store_ledger_reports.php">
+                    <i class="align-middle" data-feather="hash"></i> <span class="align-middle">Store Ledger Report</span>
                 </a>
             </li>
 

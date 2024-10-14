@@ -29,6 +29,31 @@ if (isset($_REQUEST['search_party'])) {
     echo $res;
 }
 
+if (isset($_REQUEST['search_company'])) {
+    $res = "";
+    $searchItem = mysqli_real_escape_string($connection, trim($_REQUEST['search_item']));
+    $sql = "SELECT * FROM company_list WHERE UPPER(company_name) LIKE '%" . strtoupper($searchItem) . "%' OR company_mobile LIKE '%$searchItem%'";
+    $query = mysqli_query($connection, $sql);
+    while ($row = mysqli_fetch_assoc($query)) {
+        $className = "";
+        if ($row['is_active'] === 'active') {
+            $className = "bg-success";
+        } else {
+            $className = "bg-danger";
+        }
+        $res .= "<tr>";
+        $res .= "<td>" . $row['company_name'] . "</td>";
+        $res .= "<td>" . $row['company_mobile'] . "</td>";
+        $res .= "<td>" . nl2br($row['company_address']) . "</td>";
+        $res .= "<td>" . nl2br($row['opening_balance']) . "</td>";
+        $res .= "<td><span class='badge $className'>" . $row['is_active'] . "</span></td>";
+        $res .= "<td>  <a href='?company_id=" . $row['company_id'] . "'>Edit</a> || <a href='javascript:void(0)' onclick=confirmDeletion('" . $row['company_id'] . "')>Delete</a> || <a href='company_expenses.php?company_id=" . $row['company_id'] . "'>Expenses</a></td>";
+        $res .= "</tr>";
+    }
+
+    echo $res;
+}
+
 if (isset($_REQUEST['gatepass_party'])) {
     $res = "";
     $searchItem = mysqli_real_escape_string($connection, trim($_REQUEST['search_item']));

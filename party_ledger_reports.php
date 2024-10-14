@@ -187,8 +187,11 @@ if ($error === 0) {
 $gatepassSQL = "SELECT * FROM ledger WHERE party_id = '$partyID' AND transaction_date BETWEEN '$fromDate' AND '$toDate' ORDER BY transaction_date";
         $gatepassQuery = mysqli_query($connection, $gatepassSQL);
         $balance = $obAsOnDate;
+        $credit = 0;
+        $debit = 0;
         while ($row = mysqli_fetch_assoc($gatepassQuery)) {
-
+            $credit += $row['credit'];
+            $debit += $row['debit'];
             $balance += $row['credit'] - $row['debit'];
 
             ?>
@@ -208,11 +211,15 @@ $gatepassSQL = "SELECT * FROM ledger WHERE party_id = '$partyID' AND transaction
 
     </tbody>
 </table>
-<br/>
-<b> Closing balance as on <?php echo date("jS F, Y", strtotime($toDate)) ?> : &#8377; <?php echo $balance; ?>
+<div style="margin-top: 10px;">
+<b>Opening balance as on <?php echo date("jS F, Y", strtotime($fromDate)) ?>: &#8377;<?php echo $obAsOnDate; ?></b><br>
+    <b>Total Credit (From <?php echo date("d-m-Y", strtotime($fromDate)); ?> to  <?php echo date("d-m-Y", strtotime($toDate)); ?>) : &#8377;<?php echo $credit; ?></b><br/>
+    <b>Total Debit (From <?php echo date("d-m-Y", strtotime($fromDate)); ?> to  <?php echo date("d-m-Y", strtotime($toDate)); ?>) : &#8377;<?php echo $debit; ?></b><br/>
+    <b> Closing balance as on <?php echo date("jS F, Y", strtotime($toDate)) ?> : &#8377; <?php echo $balance; ?>
 </b><br/>
-<b><?php echo $balance >= 0 ? "Party: $partyName has due amount" : "Party: $partyName paid exccess amount" ?> till <?php echo date("jS F, Y", strtotime($toDate)) ?> : &#8377;<?php echo abs($balance); ?>
+<b><?php echo $balance >= 0 ? "$partyName has due amount" : "$partyName paid exccess amount" ?> till <?php echo date("jS F, Y", strtotime($toDate)) ?> : &#8377;<?php echo abs($balance); ?>
 </b>
+</div>
 
             </td>
           </tr>

@@ -1,5 +1,5 @@
 <?php
-$pageName = "Company Ledger Report";
+$pageName = "Store Ledger Report";
 require_once "./top.inc.php";
 
 use Devker\Vaults\Vaults;
@@ -103,7 +103,7 @@ if ($error === 0) {
           <tr class="header_color">
             <td class="header_info">
                 <div style="text-align: center;">
-<h2><?php echo $companyName; ?></h2>
+<h2><?php echo $storeName; ?></h2>
 <h3><?php echo $companyAddress; ?>, <?php echo $companyCityCountry; ?>, Pin: <?php echo $companyPinCode; ?></h3>
 <h5>Mobile: <?php echo $companyMobile; ?>, Email: <?php echo $companyEmail; ?></h5>
                 </div>
@@ -158,8 +158,11 @@ if ($error === 0) {
 $gatepassSQL = "SELECT * FROM ledger WHERE transaction_date BETWEEN '$fromDate' AND '$toDate' ORDER BY transaction_date";
         $gatepassQuery = mysqli_query($connection, $gatepassSQL);
         $balance = $obAsOnDate;
+        $credit = 0;
+        $debit = 0;
         while ($row = mysqli_fetch_assoc($gatepassQuery)) {
-
+            $credit += $row['credit'];
+            $debit += $row['debit'];
             $balance += $row['credit'] - $row['debit'];
 
             ?>
@@ -179,11 +182,17 @@ $gatepassSQL = "SELECT * FROM ledger WHERE transaction_date BETWEEN '$fromDate' 
 
     </tbody>
 </table>
-<br/>
-<b> Closing balance as on <?php echo date("jS F, Y", strtotime($toDate)) ?> : &#8377; <?php echo $balance; ?>
+
+
+<div style="margin-top: 10px;">
+<b>Opening balance as on <?php echo date("jS F, Y", strtotime($fromDate)) ?>: &#8377;<?php echo $obAsOnDate; ?></b><br>
+    <b>Total Credit (From <?php echo date("d-m-Y", strtotime($fromDate)); ?> to  <?php echo date("d-m-Y", strtotime($toDate)); ?>) : &#8377;<?php echo $credit; ?></b><br/>
+    <b>Total Debit (From <?php echo date("d-m-Y", strtotime($fromDate)); ?> to  <?php echo date("d-m-Y", strtotime($toDate)); ?>) : &#8377;<?php echo $debit; ?></b><br/>
+<b> Closing balance as on <?php echo date("jS F, Y", strtotime($toDate)) ?> : &#8377;<?php echo $balance; ?>
 </b><br/>
-<b><?php echo $balance >= 0 ? "Company: $companyName has to recieve " : "Company: $companyName receive excess amount " ?> till <?php echo date("jS F, Y", strtotime($toDate)) ?> : &#8377;<?php echo abs($balance); ?>
+<b><?php echo $balance >= 0 ? "$storeName has to recieve " : "$storeName receive excess amount " ?> till <?php echo date("jS F, Y", strtotime($toDate)) ?> : &#8377;<?php echo abs($balance); ?>
 </b>
+</div>
 
             </td>
           </tr>
