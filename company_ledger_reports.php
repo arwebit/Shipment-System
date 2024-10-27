@@ -207,8 +207,11 @@ $gatepassSQL = "SELECT * FROM company_ledger WHERE company_id = '$companyID' AND
         <?php
 }
         ?>
-     <tr>
-
+<tr>
+    <th colspan="2">Total</th>
+    <th style="text-align:center"><?php echo $debit; ?></th>
+    <th style="text-align:center"><?php echo $credit; ?></th>
+    <th></th>
 </tr>
 
     </tbody>

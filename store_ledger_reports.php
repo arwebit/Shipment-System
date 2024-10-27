@@ -176,8 +176,11 @@ $gatepassSQL = "SELECT * FROM ledger WHERE transaction_date BETWEEN '$fromDate' 
         <?php
 }
         ?>
-     <tr>
-
+ <tr>
+    <th>Total</th>
+    <th style="text-align:center"><?php echo $debit; ?></th>
+    <th style="text-align:center"><?php echo $credit; ?></th>
+    <th></th>
 </tr>
 
     </tbody>

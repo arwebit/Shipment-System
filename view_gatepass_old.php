@@ -48,9 +48,10 @@ if (isset($_REQUEST['gatepass_id'])) {
         <thead>
           <tr class="header_color">
             <td class="header_info">
-            <div style="text-align: center;margin-top:40px">
+            <div style="text-align: center;margin-top:30px">
 <h2><?php echo $companyName; ?></h2>
-
+<h3><?php echo $companyAddress; ?>, <?php echo $companyCityCountry; ?>, Pin: <?php echo $companyPinCode; ?></h3>
+<h5>Mobile: <?php echo $companyMobile; ?>, Email: <?php echo $companyEmail; ?></h5>
                 </div>
             </td>
           </tr>
@@ -76,7 +77,7 @@ if (isset($_REQUEST['gatepass_id'])) {
 <tfoot>
     <tr>
         <th>
-          <div style="float: right; margin-right:50px; ">
+          <div style="float: right; margin-right:50px; margin-top:40px;">
             Signature
           </div>
         </th>

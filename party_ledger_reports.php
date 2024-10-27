@@ -208,6 +208,12 @@ $gatepassSQL = "SELECT * FROM ledger WHERE party_id = '$partyID' AND transaction
      <tr>
 
 </tr>
+<tr>
+    <th>Total</th>
+    <th style="text-align:center"><?php echo $debit; ?></th>
+    <th style="text-align:center"><?php echo $credit; ?></th>
+    <th></th>
+</tr>
 
     </tbody>
 </table>
