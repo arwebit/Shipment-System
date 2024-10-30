@@ -91,7 +91,13 @@ if (!$_REQUEST['ledger_id']) {
                     $message = "Successfully saved";
                     $className = "text-success";
                     $error = 0;
-                } else {
+                    ?>
+                     <script>
+                            alert("Saved");
+                            window.location.href="party_payment.php?party_id=<?php echo $partyID; ?>";
+                        </script>
+                    <?php
+} else {
                     $message = "Server error";
                     $className = "text-danger";
                     $error = 1;

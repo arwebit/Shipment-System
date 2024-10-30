@@ -213,7 +213,13 @@ $statusArr = ['active', 'inactive'];
                 $message = "Successfully saved";
                 $className = "text-success";
                 $error = 0;
-            } else {
+                ?>
+                <script>
+                    alert("Saved");
+                    window.location.href="manage_users.php";
+                </script>
+                <?php
+} else {
                 $message = "Server error";
                 $className = "text-danger";
                 $error = 1;

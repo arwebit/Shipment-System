@@ -255,7 +255,7 @@ This is the party accounts report. It shows the party ledger. To generate the re
                                     </p>
                                     <b>F.5. Company Ledger Report</b>
                                     <p style="margin-left:10px;">
-This is the company accounts report. It shows the party ledger. To generate the report, provide: <b>Party name</b>, <b>From Date</b> and <b>To Date</b>.
+This is the company accounts report. It shows the party ledger. To generate the report, provide: <b>Company name</b>, <b>From Date</b> and <b>To Date</b>.
                                     </p>
                              </div>
                              </p>

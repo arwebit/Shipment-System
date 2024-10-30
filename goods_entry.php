@@ -85,7 +85,13 @@ if (!$_REQUEST['goods_id']) {
                         $message = "Successfully saved";
                         $className = "text-success";
                         $error = 0;
-                    } else {
+                        ?>
+                        <script>
+                            alert("Saved");
+                            window.location.href="goods_entry.php?party_id=<?php echo $partyID; ?>";
+                        </script>
+                        <?php
+} else {
                         $message = "Ledger not saved";
                         $className = "text-danger";
                         $error = 1;

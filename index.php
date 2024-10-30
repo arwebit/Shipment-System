@@ -2,7 +2,7 @@
 $pageName = "Login";
 session_start();
 error_reporting(1);
-require_once "./dbconnect.php";
+require_once "./config/dbconnect.php";
 require_once __DIR__ . "/vendor/autoload.php";
 
 use Devker\Vaults\Vaults;

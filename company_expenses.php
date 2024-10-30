@@ -197,7 +197,7 @@ if (!$_REQUEST['ledger_id']) {
                 $transactionDate = date("Y-m-d", strtotime($transactionDate));
             }
             if ($error === 0) {
-                $updateSQL = "UPDATE company_ledger SET debit ='$payment', payment_type='$paymentType', payment_ref_no='$paymentRefNo', transaction_date='$paymentDate' WHERE ledger_id='$companyLedgerID '";
+                $updateSQL = "UPDATE company_ledger SET debit ='$payment', particulars='$particulars', credit='$credit', transaction_date='$transactionDate' WHERE ledger_id='$companyLedgerID'";
 
                 if (mysqli_query($connection, $updateSQL)) {
                     $message = "Successfully updated";

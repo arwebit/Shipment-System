@@ -15,7 +15,7 @@
                     Master
                 </li>
                 <li>
-                <a class="sidebar-link" href="export_db.php">
+                <a class="sidebar-link" href="config/export_db.php">
                         <i class="align-middle" data-feather="database"></i> <span class="align-middle">Backup</span>
                     </a>
 

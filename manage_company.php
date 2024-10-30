@@ -25,7 +25,7 @@ if (isset($_REQUEST['delete']) && isset($_REQUEST['company_id'])) {
     $deleteCompanyLedgerSQL = "DELETE FROM company_ledger WHERE company_id='$companyID'";
     $deleteCompanySQL = "DELETE FROM company_list WHERE company_id='$companyID'";
 
-    if (mysqli_query($connection, $deleteCompanyLedgerSQL) || mysqli_query($connection, $deleteCompanySQL)) {
+    if (mysqli_query($connection, $deleteCompanySQL) || mysqli_query($connection, $deleteCompanyLedgerSQL)) {
         $message = "Successfully deleted";
         $className = "text-success";
         ?>
@@ -224,7 +224,13 @@ $statusArr = ['active', 'inactive'];
                 $message = "Successfully saved";
                 $className = "text-success";
                 $error = 0;
-            } else {
+                ?>
+                <script>
+                    alert("Saved");
+                    window.location.href="manage_company.php";
+                </script>
+                <?php
+} else {
                 $message = "Server error";
                 $className = "text-danger";
                 $error = 1;
