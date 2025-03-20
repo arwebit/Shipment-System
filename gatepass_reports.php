@@ -1,16 +1,16 @@
 <?php
-$pageName = "Gatepass Report";
-require_once "./top.inc.php";
+    $pageName = "Gatepass Report";
+    require_once "./top.inc.php";
 
-use Devker\Vaults\Vaults;
+    use Devker\Vaults\Vaults;
 ?>
 
 <div class="wrapper">
 
-    <?php require_once "./sidebar.inc.php";?>
+    <?php require_once "./sidebar.inc.php"; ?>
     <div class="main">
 
-        <?php require_once "./header.inc.php";?>
+        <?php require_once "./header.inc.php"; ?>
         <main class="content">
             <div class="container-fluid p-0">
                 <div class="mb-3">
@@ -31,16 +31,17 @@ use Devker\Vaults\Vaults;
                                                             </b></label>
                                             <select name="party_id" class="form-control" required>
                                             <option value="">Select party name</option>
+                                            <option value="All">All parties</option>
                                                             <?php
-$partySQL = "SELECT * FROM party_list";
-$query = mysqli_query($connection, $partySQL);
-while ($row = mysqli_fetch_assoc($query)) {
-    ?>
+                                                                $partySQL = "SELECT * FROM party_list";
+                                                                $query    = mysqli_query($connection, $partySQL);
+                                                                while ($row = mysqli_fetch_assoc($query)) {
+                                                                ?>
                                                                 <option value="<?php echo $row['party_id']; ?>" >
                                                                     <?php echo $row['party_name']; ?>
                                                                 </option>
                                                                 <?php
-}?>
+                                                                }?>
 
                                             </select>
                                         </div>
@@ -70,45 +71,56 @@ while ($row = mysqli_fetch_assoc($query)) {
                         </div>
                     </div>
 <?php
-if (isset($_REQUEST['get_report'])) {
-    $error = 0;
-    $fromDate = mysqli_real_escape_string($connection, Vaults::removeHTMLEntities(trim($_REQUEST['gp_from_date'])));
-    $toDate = mysqli_real_escape_string($connection, Vaults::removeHTMLEntities(trim($_REQUEST['gp_to_date'])));
-    $partyID = mysqli_real_escape_string($connection, Vaults::removeHTMLEntities(trim($_REQUEST['party_id'])));
+    if (isset($_REQUEST['get_report'])) {
+        $error    = 0;
+        $fromDate = mysqli_real_escape_string($connection, Vaults::removeHTMLEntities(trim($_REQUEST['gp_from_date'])));
+        $toDate   = mysqli_real_escape_string($connection, Vaults::removeHTMLEntities(trim($_REQUEST['gp_to_date'])));
+        $partyID  = mysqli_real_escape_string($connection, Vaults::removeHTMLEntities(trim($_REQUEST['party_id'])));
 
-    if (empty($fromDate)) {
-        $fromDateErr = "Required";
-        $error = 1;
-    } else {
-        $fromDate = date("Y-m-d", strtotime($fromDate));
-    }
-    if (empty($toDate)) {
-        $toDateErr = "Required";
-        $error = 1;
-    } else {
-        $toDate = date("Y-m-d", strtotime($toDate));
-    }
-    if (empty($partyID)) {
-        $partyErr = "Required";
-        $error = 1;
-    }
+        if (empty($fromDate)) {
+            $fromDateErr = "Required";
+            $error       = 1;
+        } else {
+            $fromDate = date("Y-m-d", strtotime($fromDate));
+        }
+        if (empty($toDate)) {
+            $toDateErr = "Required";
+            $error     = 1;
+        } else {
+            $toDate = date("Y-m-d", strtotime($toDate));
+        }
+        if (empty($partyID)) {
+            $partyErr = "Required";
+            $error    = 1;
+        }
     ?>
                     <div class="row">
                     <div class="col-12 col-lg-12">
                         <div class="card">
 
         <?php
-if ($error === 0) {
-        $partyID = trim($_REQUEST['party_id']);
-        $sql = "SELECT * FROM party_list WHERE party_id='$partyID'";
-        $query = mysqli_query($connection, $sql);
-        while ($row = mysqli_fetch_assoc($query)) {
-            $partyName = $row['party_name'];
-            $partyMobile = $row['party_mobile'];
-            $partyAddress = $row['party_address'];
-        }
+            if ($error === 0) {
+                    if ($partyID === "All") {
+                        $sql   = "SELECT * FROM party_list";
+                        $query = mysqli_query($connection, $sql);
+                        while ($row = mysqli_fetch_assoc($query)) {
+                            $partyName    = $row['party_name'];
+                            $partyMobile  = $row['party_mobile'];
+                            $partyAddress = $row['party_address'];
+                        }
 
-        ?>
+                    } else {
+                        $partyID = trim($_REQUEST['party_id']);
+                        $sql     = "SELECT * FROM party_list WHERE party_id='$partyID'";
+                        $query   = mysqli_query($connection, $sql);
+                        while ($row = mysqli_fetch_assoc($query)) {
+                            $partyName    = $row['party_name'];
+                            $partyMobile  = $row['party_mobile'];
+                            $partyAddress = $row['party_address'];
+                        }
+                    }
+
+                ?>
          <div class="card-header">
                                     <h5 class="card-title mb-0">
                                         <button class="btn btn-info" onclick="printReport('printReport')">Print</button>
@@ -123,8 +135,8 @@ if ($error === 0) {
             <td class="header_info">
             <div style="text-align: center;">
 <h2><?php echo $companyName; ?></h2>
-<h3><?php echo $companyAddress; ?>, <?php echo $companyCityCountry; ?>, Pin: <?php echo $companyPinCode; ?></h3>
-<h5>Mobile: <?php echo $companyMobile; ?>, Email: <?php echo $companyEmail; ?></h5>
+<h3><?php echo $companyAddress; ?>,<?php echo $companyCityCountry; ?>, Pin:<?php echo $companyPinCode; ?></h3>
+<h5>Mobile:                                                                                                                                     <?php echo $companyMobile; ?>, Email:<?php echo $companyEmail; ?></h5>
                 </div>
             </td>
           </tr>
@@ -132,14 +144,24 @@ if ($error === 0) {
             <td>
               <table style="width: 100%">
                 <tr class="table-info">
-                  <td style="width: 50%; padding-left: 20px">
-                    <b>Party Name :</b> <?php echo $partyName; ?><br />
-                    <b>Party Mobile :</b> <?php echo $partyMobile; ?><br />
-                    <b>Party Address :</b> <?php echo $partyAddress; ?>
+              <?php
+                  if ($partyID === "All") {
+                          ?>
+<?php
+    } else {
+            ?>
+                    <td style="width: 50%; padding-left: 20px">
+                    <b>Party Name :</b>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     <?php echo $partyName; ?><br />
+                    <b>Party Mobile :</b>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             <?php echo $partyMobile; ?><br />
+                    <b>Party Address :</b>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         <?php echo $partyAddress; ?>
                   </td>
+                  <?php
+                      }
+                          ?>
                   <td style="width: 45%; padding-right: 20px; vertical-align:top">
-                  <b>Report Generated :</b> From <?php echo date("d-m-Y", strtotime($fromDate)); ?> To <?php echo date("d-m-Y", strtotime($toDate)); ?><br />
-                    <b>Printed on :</b> <?php echo date("d-m-Y"); ?>
+                  <b>Report Generated :</b> From                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 <?php echo date("d-m-Y", strtotime($fromDate)); ?> To
+                  <?php echo date("d-m-Y", strtotime($toDate)); ?><br />
+                    <b>Printed on :</b>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     <?php echo date("d-m-Y"); ?>
                   </td>
                 </tr>
               </table>
@@ -157,7 +179,7 @@ if ($error === 0) {
         <tr>
             <td>
             <div style="visibility: hidden;">
-            <div style="text-align: center;">&copy; <?php echo $companyCopyRight; ?></div>
+            <div style="text-align: center;">&copy;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     <?php echo $companyCopyRight; ?></div>
          </div>
             </td>
           </tr>
@@ -172,6 +194,7 @@ if ($error === 0) {
 
         <tr>
         <th style="text-align:center">Gatepass ID</th>
+        <th style="text-align:center">Party name</th>
             <th style="text-align:center">Booking Code</th>
             <th style="text-align:center">Booking Date</th>
             <th style="text-align:center">Bilty Number</th>
@@ -185,30 +208,36 @@ if ($error === 0) {
     </thead>
     <tbody >
         <?php
-$gatepassSQL = "SELECT * FROM gatepass WHERE party_id = '$partyID' AND delivery_date BETWEEN '$fromDate' AND '$toDate' ORDER BY delivery_date DESC";
-        $gatepassQuery = mysqli_query($connection, $gatepassSQL);
-        $totWeight = 0;
-        $totPackage = 0;
-        $totToPay = 0;
-        $totReceive = 0;
-        $totDiscount = 0;
+            if ($partyID === "All") {
+                        $gatepassSQL = "SELECT * FROM gatepass a INNER JOIN party_list b ON a.party_id=b.party_id WHERE a.delivery_date BETWEEN '$fromDate' AND '$toDate' ORDER BY a.delivery_date DESC";
+                    } else {
+                        $gatepassSQL = "SELECT * FROM gatepass a INNER JOIN party_list b ON a.party_id=b.party_id WHERE a.party_id = '$partyID' AND a.delivery_date BETWEEN '$fromDate' AND '$toDate' ORDER BY a.delivery_date DESC";
+                    }
 
-        while ($row = mysqli_fetch_assoc($gatepassQuery)) {
+                    $gatepassQuery = mysqli_query($connection, $gatepassSQL);
+                    $totWeight     = 0;
+                    $totPackage    = 0;
+                    $totToPay      = 0;
+                    $totReceive    = 0;
+                    $totDiscount   = 0;
 
-            $package = (double) $row['package'];
-            $weight = (double) $row['weight'];
-            $toPay = (double) $row['to_pay_amount'];
-            $receive = (double) $row['receive_amount'];
-            $discount = (double) $row['discount_amount'];
+                    while ($row = mysqli_fetch_assoc($gatepassQuery)) {
 
-            $totPackage = $package + $totPackage;
-            $totWeight = $weight + $totWeight;
-            $totToPay = $toPay + $totToPay;
-            $totReceive = $receive + $totReceive;
-            $totDiscount = $discount + $totDiscount;
-            ?>
+                        $package  = (double) $row['package'];
+                        $weight   = (double) $row['weight'];
+                        $toPay    = (double) $row['to_pay_amount'];
+                        $receive  = (double) $row['receive_amount'];
+                        $discount = (double) $row['discount_amount'];
+
+                        $totPackage  = $package + $totPackage;
+                        $totWeight   = $weight + $totWeight;
+                        $totToPay    = $toPay + $totToPay;
+                        $totReceive  = $receive + $totReceive;
+                        $totDiscount = $discount + $totDiscount;
+                    ?>
         <tr>
            <td style="text-align:center"><?php echo $row['gatepass_id']; ?></td>
+           <td style="text-align:center"><?php echo $row['party_name']; ?></td>
             <td style="text-align:center"><?php echo $row['booking_code']; ?></td>
             <td style="text-align:center"><?php echo date("d-M-Y", strtotime($row['booking_date'])); ?></td>
             <td style="text-align:center"><?php echo $row['bilty_no']; ?></td>
@@ -220,10 +249,10 @@ $gatepassSQL = "SELECT * FROM gatepass WHERE party_id = '$partyID' AND delivery_
             <td style="text-align:center"><?php echo $row['discount_amount']; ?></td>
         </tr>
         <?php
-}
-        ?>
+            }
+                ?>
      <tr>
-        <th colspan="5">Total</th>
+        <th colspan="6">Total</th>
         <th style="text-align:center"><?php echo (double) $totPackage; ?></th>
         <th style="text-align:center"><?php echo (double) $totWeight; ?></th>
         <th style="text-align:center"><?php echo (double) round($totToPay, 2); ?></th>
@@ -238,13 +267,13 @@ $gatepassSQL = "SELECT * FROM gatepass WHERE party_id = '$partyID' AND delivery_
         <!--  -->
 
         <!-- <div class="report_footer">
-        <div style="text-align: center;">&copy; <?php //echo $companyCopyRight; ?></div>
+        <div style="text-align: center;">&copy;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     <?php //echo $companyCopyRight; ?></div>
 </div> -->
       </table>
     </div>
 </div>
 <?php
-}
+    }
     ?>
     </div>
 
@@ -252,18 +281,18 @@ $gatepassSQL = "SELECT * FROM gatepass WHERE party_id = '$partyID' AND delivery_
                         </div>
                         </div>
                         <?php
-}?>
+                        }?>
                 </div>
         </main>
 
         <?php
-require_once "./footer.inc.php";
-?>
+            require_once "./footer.inc.php";
+        ?>
     </div>
 </div>
 
 <?php
-require_once "./bottom.inc.php";
+    require_once "./bottom.inc.php";
 ?>
 <script>
     $(document).ready(function() {

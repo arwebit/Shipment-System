@@ -1,24 +1,25 @@
 <?php
-session_start();
-error_reporting(1);
-require_once "./config/dbconnect.php";
-require_once __DIR__ . "/vendor/autoload.php";
-require_once "./config/constants.php";
+    session_start();
+    error_reporting(1);
+    require_once "./config/dbconnect.php";
+    require_once __DIR__ . "/vendor/autoload.php";
+    require_once "./config/constants.php";
 
-use Devker\Vaults\Vaults;
+    use Devker\Vaults\Vaults;
 
-if ($_SESSION['SHIP_USER_ID'] === null || $_SESSION['SHIP_USER_ID'] === "" || empty($_SESSION['SHIP_USER_ID'])) {
-    Vaults::redirectPage("index.php");
-} else {
-    $userID = $_SESSION['SHIP_USER_ID'];
-    $roleSQL = "SELECT * FROM user_details WHERE user_id='$userID'";
-    $query = mysqli_query($connection, $roleSQL);
-    while ($row = mysqli_fetch_assoc($query)) {
-        $loginFullName = $row['full_name'];
-        $loginUserName = $row['username'];
-        $loginUserRole = $row['user_role'];
+    if ($_SESSION['SHIP_USER_ID'] === null || $_SESSION['SHIP_USER_ID'] === "" || empty($_SESSION['SHIP_USER_ID'])) {
+        Vaults::redirectPage("index.php");
+    } else {
+        $userID  = $_SESSION['SHIP_USER_ID'];
+        $roleSQL = "SELECT * FROM user_details WHERE user_id='$userID'";
+        $query   = mysqli_query($connection, $roleSQL);
+        while ($row = mysqli_fetch_assoc($query)) {
+            $loginFullName              = $row['full_name'];
+            $loginUserName              = $row['username'];
+            $loginUserRole              = $row['user_role'];
+            $_SESSION['SHIP_USER_ROLE'] = $loginUserRole;
+        }
     }
-}
 
 ?>
 <!DOCTYPE html>
@@ -35,7 +36,7 @@ if ($_SESSION['SHIP_USER_ID'] === null || $_SESSION['SHIP_USER_ID'] === "" || em
     <link rel="shortcut icon" href="img/icons/icon-48x48.png" />
 
 
-    <title>Shipment Ledger System | <?php echo $pageName; ?></title>
+    <title>Shipment Ledger System |                                                                                                          <?php echo $pageName; ?></title>
 
     <link href="css/app.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">

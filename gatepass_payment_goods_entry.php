@@ -1,15 +1,15 @@
 <?php
-$pageName = "Gatepass, Payment and Goods Entry";
-require_once "./top.inc.php";
+    $pageName = "Gatepass, Payment and Goods Entry";
+    require_once "./top.inc.php";
 
-use Devker\Vaults\Vaults;
+    use Devker\Vaults\Vaults;
 ?>
 <div class="wrapper">
 
-    <?php require_once "./sidebar.inc.php";?>
+    <?php require_once "./sidebar.inc.php"; ?>
     <div class="main">
 
-        <?php require_once "./header.inc.php";?>
+        <?php require_once "./header.inc.php"; ?>
         <main class="content">
             <div class="container-fluid p-0">
                 <div class="mb-3">
@@ -48,34 +48,34 @@ use Devker\Vaults\Vaults;
                         </div>
                     </div>
 <?php
-if (isset($_REQUEST['party_id'])) {
-    if (isset($_REQUEST['del_gatepass_id'])) {
-        $gatepassID = mysqli_real_escape_string($connection, Vaults::removeHTMLEntities(trim($_REQUEST['del_gatepass_id'])));
+    if (isset($_REQUEST['party_id'])) {
+        if (isset($_REQUEST['del_gatepass_id'])) {
+            $gatepassID = mysqli_real_escape_string($connection, Vaults::removeHTMLEntities(trim($_REQUEST['del_gatepass_id'])));
 
-        $deleteGatepassSQL = "DELETE FROM gatepass WHERE gatepass_id='$gatepassID'";
-        $deleteLedgerSQL = "DELETE FROM ledger WHERE gatepass_id='$gatepassID'";
+            $deleteGatepassSQL = "DELETE FROM gatepass WHERE gatepass_id='$gatepassID'";
+            $deleteLedgerSQL   = "DELETE FROM ledger WHERE gatepass_id='$gatepassID'";
 
-        if (mysqli_query($connection, $deleteGatepassSQL) && mysqli_query($connection, $deleteLedgerSQL)) {
-            $message = "Successfully deleted";
-            $className = "text-success";
+            if (mysqli_query($connection, $deleteGatepassSQL) && mysqli_query($connection, $deleteLedgerSQL)) {
+                $message   = "Successfully deleted";
+                $className = "text-success";
+            }
         }
-    }
     ?>
                     <div class="row">
                     <div class="col-12 col-lg-12">
                         <div class="card">
                             <?php
 
-    $partyID = trim($_REQUEST['party_id']);
-    $partyName = "";
-    $sql = "SELECT * FROM party_list WHERE party_id='$partyID'";
-    $query = mysqli_query($connection, $sql);
-    while ($row = mysqli_fetch_assoc($query)) {
-        $partyName = $row['party_name'];
-    }
-    ?>
+                                    $partyID   = trim($_REQUEST['party_id']);
+                                    $partyName = "";
+                                    $sql       = "SELECT * FROM party_list WHERE party_id='$partyID'";
+                                    $query     = mysqli_query($connection, $sql);
+                                    while ($row = mysqli_fetch_assoc($query)) {
+                                        $partyName = $row['party_name'];
+                                    }
+                                ?>
        <div class="card-header">
-                                    <h5 class="card-title mb-0" style="float: left;">Gatepasss for Party : <?php echo $partyName; ?></h5>
+                                    <h5 class="card-title mb-0" style="float: left;">Gatepasss for Party :                                                                                                                                                                                                                                                                                                                               <?php echo $partyName; ?></h5>
                                     <a href="manage_gatepass.php?party_id=<?php echo $partyID; ?>">
                                     <button style="float: right;" class="btn btn-primary">Add</button></a>
                                  </div>
@@ -97,11 +97,11 @@ if (isset($_REQUEST['party_id'])) {
     </thead>
     <tbody>
         <?php
-$gatepassSQL = "SELECT * FROM gatepass WHERE party_id = '$partyID'";
-    $gatepassQuery = mysqli_query($connection, $gatepassSQL);
-    while ($row = mysqli_fetch_assoc($gatepassQuery)) {
-        $dueAmount = $row['due_amount'];
-        ?>
+            $gatepassSQL   = "SELECT * FROM gatepass WHERE party_id = '$partyID'";
+                $gatepassQuery = mysqli_query($connection, $gatepassSQL);
+                while ($row = mysqli_fetch_assoc($gatepassQuery)) {
+                    $dueAmount = $row['due_amount'];
+                ?>
         <tr>
             <td><?php echo $row['gatepass_id']; ?></td>
             <td><?php echo $row['bilty_no']; ?></td>
@@ -109,14 +109,22 @@ $gatepassSQL = "SELECT * FROM gatepass WHERE party_id = '$partyID'";
             <td><?php echo $row['package']; ?></td>
             <td><?php echo $row['weight']; ?></td>
             <td>
-                <a href="manage_gatepass.php?gatepass_id=<?php echo $row['gatepass_id']; ?>">Edit</a> ||
-                <a target="_blank" href="view_gatepass.php?gatepass_id=<?php echo $row['gatepass_id']; ?>">View</a> ||
-                <a href="javascript:void(0)" onclick="confirmDeletion('<?php echo $row['gatepass_id']; ?>')">Delete</a>
+
+<?php
+    if ($_SESSION['SHIP_USER_ROLE'] != 3) {
+            ?>
+    <a href="manage_gatepass.php?gatepass_id=<?php echo $row['gatepass_id']; ?>">Edit</a> ||
+    <a href="javascript:void(0)" onclick="confirmDeletion('<?php echo $row['gatepass_id']; ?>')">Delete</a> ||
+        <?php
+            }
+                ?>
+                <a target="_blank" href="view_gatepass.php?gatepass_id=<?php echo $row['gatepass_id']; ?>">View</a>
+
             </td>
         </tr>
         <?php
-}
-    ?>
+            }
+            ?>
     </tbody>
 </table>
 </div>
@@ -126,18 +134,18 @@ $gatepassSQL = "SELECT * FROM gatepass WHERE party_id = '$partyID'";
                         </div>
                         </div>
                         <?php
-}?>
+                        }?>
                 </div>
         </main>
 
         <?php
-require_once "./footer.inc.php";
-?>
+            require_once "./footer.inc.php";
+        ?>
     </div>
 </div>
 
 <?php
-require_once "./bottom.inc.php";
+    require_once "./bottom.inc.php";
 ?>
 <script>
 

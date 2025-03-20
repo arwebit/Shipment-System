@@ -1,6 +1,6 @@
 <?php
-$pageName = "User Manual";
-require_once "./top.inc.php";
+    $pageName = "User Manual";
+    require_once "./top.inc.php";
 ?>
 <style type="text/css">
 
@@ -86,10 +86,10 @@ require_once "./top.inc.php";
 </style>
 <div class="wrapper">
 
-    <?php require_once "./sidebar.inc.php";?>
+    <?php require_once "./sidebar.inc.php"; ?>
     <div class="main">
 
-        <?php require_once "./header.inc.php";?>
+        <?php require_once "./header.inc.php"; ?>
         <main class="content">
             <div class="container-fluid p-0">
  <div class="row">
@@ -127,7 +127,13 @@ require_once "./top.inc.php";
                              <div style="margin-left:10px;">
                                     <b>B.1. Users</b>
                                     <p style="margin-left:10px;">
-                                    Admin can create users. There are two roles : <b>Admin</b> and <b>Manager</b>. <b>Admin</b> roles can access all the features, whereas <b>Manager</b> roles can accees all features except <b>Master Section</b>.
+                                    Admin can create users. There are 3 (three) roles : <b>Admin</b>, <b>Manager</b> and <b>Staff</b>. <br/>
+                                    <b>N.B.: </b>
+                                    <ol>
+                                      <li><b>Admin</b> roles can access all the features.</li>
+                                      <li><b>Manager</b> roles can accees all features except <b>Master Section</b>.</li>
+                                      <li><b>Staff</b> roles can accees all features except <b>Master Section</b>. Moreover they can only <b>Entry</b> and <b>View</b> records. They are unable to <b>Edit</b> or <b>Delete</b> records.</li>
+                                    </ol>
                                     </p>
                                     <b>B.2. Backup</b>
                                     <p style="margin-left:10px;">
@@ -273,13 +279,13 @@ This is the company accounts report. It shows the party ledger. To generate the 
         </main>
 
         <?php
-require_once "./footer.inc.php";
-?>
+            require_once "./footer.inc.php";
+        ?>
     </div>
 </div>
 
 <?php
-require_once "./bottom.inc.php";
+    require_once "./bottom.inc.php";
 ?>
 <script>
         function printReport(divID) {

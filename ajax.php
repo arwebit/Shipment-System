@@ -1,14 +1,16 @@
 <?php
+session_start();
+error_reporting(1);
 require_once "./config/dbconnect.php";
 require_once __DIR__ . "/vendor/autoload.php";
 
 use Devker\Vaults\Vaults;
 
 if (isset($_REQUEST['search_party'])) {
-    $res = "";
+    $res        = "";
     $searchItem = mysqli_real_escape_string($connection, trim($_REQUEST['search_item']));
-    $sql = "SELECT * FROM party_list WHERE UPPER(party_name) LIKE '%" . strtoupper($searchItem) . "%' OR party_mobile LIKE '%$searchItem%'";
-    $query = mysqli_query($connection, $sql);
+    $sql        = "SELECT * FROM party_list WHERE UPPER(party_name) LIKE '%" . strtoupper($searchItem) . "%' OR party_mobile LIKE '%$searchItem%'";
+    $query      = mysqli_query($connection, $sql);
     while ($row = mysqli_fetch_assoc($query)) {
         $className = "";
         if ($row['is_active'] === 'active') {
@@ -22,18 +24,21 @@ if (isset($_REQUEST['search_party'])) {
         $res .= "<td>" . nl2br($row['party_address']) . "</td>";
         $res .= "<td>" . nl2br($row['opening_balance']) . "</td>";
         $res .= "<td><span class='badge $className'>" . $row['is_active'] . "</span></td>";
-        $res .= "<td>  <a href='?party_id=" . $row['party_id'] . "'>Edit</a> || <a href='javascript:void(0)' onclick=confirmDeletion('" . $row['party_id'] . "')>Delete</a></td>";
-        $res .= "</tr>";
+        if ($_SESSION['SHIP_USER_ROLE'] != 3) {
+            $res .= "<td>  <a href='?party_id=" . $row['party_id'] . "'>Edit</a> || <a href='javascript:void(0)' onclick=confirmDeletion('" . $row['party_id'] . "')>Delete</a></td>";
+            $res .= "</tr>";
+        }
+
     }
 
     echo $res;
 }
 
 if (isset($_REQUEST['search_company'])) {
-    $res = "";
+    $res        = "";
     $searchItem = mysqli_real_escape_string($connection, trim($_REQUEST['search_item']));
-    $sql = "SELECT * FROM company_list WHERE UPPER(company_name) LIKE '%" . strtoupper($searchItem) . "%' OR company_mobile LIKE '%$searchItem%'";
-    $query = mysqli_query($connection, $sql);
+    $sql        = "SELECT * FROM company_list WHERE UPPER(company_name) LIKE '%" . strtoupper($searchItem) . "%' OR company_mobile LIKE '%$searchItem%'";
+    $query      = mysqli_query($connection, $sql);
     while ($row = mysqli_fetch_assoc($query)) {
         $className = "";
         if ($row['is_active'] === 'active') {
@@ -46,19 +51,23 @@ if (isset($_REQUEST['search_company'])) {
         $res .= "<td>" . $row['company_mobile'] . "</td>";
         $res .= "<td>" . nl2br($row['company_address']) . "</td>";
         $res .= "<td>" . nl2br($row['opening_balance']) . "</td>";
-        $res .= "<td><span class='badge $className'>" . $row['is_active'] . "</span></td>";
-        $res .= "<td>  <a href='?company_id=" . $row['company_id'] . "'>Edit</a> || <a href='javascript:void(0)' onclick=confirmDeletion('" . $row['company_id'] . "')>Delete</a> || <a href='company_expenses.php?company_id=" . $row['company_id'] . "'>Expenses</a></td>";
-        $res .= "</tr>";
+        $res .= "<td><span class='badge $className'>" . $row['is_active'] . "</span></td><td>";
+
+        if ($_SESSION['SHIP_USER_ROLE'] != 3) {
+            $res .= "<a href='?company_id=" . $row['company_id'] . "'>Edit</a> || <a href='javascript:void(0)' onclick=confirmDeletion('" . $row['company_id'] . "')>Delete</a> || ";
+        }
+        $res .= "<a href='company_expenses.php?company_id=" . $row['company_id'] . "'>Expenses</a>";
+        $res .= "</td></tr>";
     }
 
     echo $res;
 }
 
 if (isset($_REQUEST['gatepass_party'])) {
-    $res = "";
+    $res        = "";
     $searchItem = mysqli_real_escape_string($connection, trim($_REQUEST['search_item']));
-    $sql = "SELECT * FROM party_list WHERE (UPPER(party_name) LIKE '%" . strtoupper($searchItem) . "%' OR party_mobile LIKE '%$searchItem%') AND is_active='active'";
-    $query = mysqli_query($connection, $sql);
+    $sql        = "SELECT * FROM party_list WHERE (UPPER(party_name) LIKE '%" . strtoupper($searchItem) . "%' OR party_mobile LIKE '%$searchItem%') AND is_active='active'";
+    $query      = mysqli_query($connection, $sql);
     while ($row = mysqli_fetch_assoc($query)) {
         $className = "";
         if ($row['is_active'] === 'active') {
@@ -70,8 +79,12 @@ if (isset($_REQUEST['gatepass_party'])) {
         $res .= "<td>" . $row['party_name'] . "</td>";
         $res .= "<td>" . $row['party_mobile'] . "</td>";
         $res .= "<td>" . nl2br($row['party_address']) . "</td>";
-        $res .= "<td>  <a href='?party_id=" . $row['party_id'] . "'>Gatepass</a> || <a href='party_payment.php?party_id=" . $row['party_id'] . "'>Payment</a> || <a href='goods_entry.php?party_id=" . $row['party_id'] . "'>Goods entry</a></td>";
-        $res .= "</tr>";
+        $res .= "<td>  <a href='?party_id=" . $row['party_id'] . "'>Gatepass</a> || <a href='goods_entry.php?party_id=" . $row['party_id'] . "'>Goods entry</a>";
+        if ($_SESSION['SHIP_USER_ROLE'] != 3) {
+            $res .= " || <a href='party_payment.php?party_id=" . $row['party_id'] . "'>Payment</a>";
+        }
+
+        $res .= "</td></tr>";
     }
 
     echo $res;

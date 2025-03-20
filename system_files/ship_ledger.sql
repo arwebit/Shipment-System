@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 17, 2024 at 07:53 AM
+-- Generation Time: Mar 25, 2025 at 08:09 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -36,6 +36,13 @@ CREATE TABLE `company_ledger` (
   `credit` double DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
+--
+-- Dumping data for table `company_ledger`
+--
+
+INSERT INTO `company_ledger` (`ledger_id`, `company_id`, `particulars`, `transaction_date`, `debit`, `credit`) VALUES
+(2, 3, 'SBI', '2025-03-19', 2000, 0);
+
 -- --------------------------------------------------------
 
 --
@@ -54,6 +61,13 @@ CREATE TABLE `company_list` (
   `updated_by` varchar(10) DEFAULT NULL,
   `updated_date_time` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- Dumping data for table `company_list`
+--
+
+INSERT INTO `company_list` (`company_id`, `company_name`, `company_mobile`, `company_address`, `opening_balance`, `is_active`, `created_by`, `created_date_time`, `updated_by`, `updated_date_time`) VALUES
+(3, 'Test', '', 'WB', 0.00, 'active', 'arghya', '2025-03-19 13:48:30', '', NULL);
 
 -- --------------------------------------------------------
 
@@ -230,7 +244,8 @@ CREATE TABLE `goods_list` (
 INSERT INTO `goods_list` (`goods_id`, `party_id`, `goods_name`, `total_amount`, `sell_date`) VALUES
 (1, 5, 'RM', 10400.00, '2024-08-26'),
 (2, 7, 'RM', 10400.00, '2024-08-26'),
-(3, 27, 'DINEAR SET', 2020.00, '2024-09-01');
+(3, 27, 'DINEAR SET', 2020.00, '2024-09-01'),
+(4, 12, 'Test', 4000.00, '2025-03-19');
 
 -- --------------------------------------------------------
 
@@ -457,7 +472,8 @@ INSERT INTO `ledger` (`ledger_id`, `party_id`, `gatepass_id`, `goods_id`, `debit
 (201, 17, NULL, NULL, 3850.00, NULL, 'Cash', '', '2024-10-04'),
 (202, 8, NULL, NULL, 10000.00, NULL, 'Cash', '', '2024-10-04'),
 (203, 29, NULL, NULL, 2500.00, NULL, 'Cash', '', '2024-10-05'),
-(204, 29, NULL, NULL, 1675.00, NULL, 'UPI', '', '2024-10-05');
+(204, 29, NULL, NULL, 1675.00, NULL, 'UPI', '', '2024-10-05'),
+(205, 12, NULL, 4, NULL, 4000.00, NULL, NULL, '2025-03-19');
 
 -- --------------------------------------------------------
 
@@ -476,7 +492,8 @@ CREATE TABLE `master_role` (
 
 INSERT INTO `master_role` (`role_id`, `role_name`) VALUES
 (1, 'Administrator'),
-(2, 'Manager');
+(2, 'Manager'),
+(3, 'Staff');
 
 -- --------------------------------------------------------
 
@@ -547,7 +564,11 @@ INSERT INTO `party_list` (`party_id`, `party_name`, `party_mobile`, `party_addre
 (51, 'C N BARTAN', '', 'KISHANPUR', 0.00, 'active', 'drc', '2024-10-03 13:28:38', '', NULL),
 (52, 'DEEPAK CHODHARI', '', 'SUPAUL', 0.00, 'active', 'drc', '2024-10-05 09:50:30', '', NULL),
 (53, 'SAMIM BOOT HAUSE', '', 'SUPAUL', 0.00, 'active', '', '2024-10-05 15:24:13', '', NULL),
-(54, 'DILIP SHARMA', '', 'SUPAUL', 0.00, 'active', '', '2024-10-05 15:40:47', '', NULL);
+(54, 'DILIP SHARMA', '', 'SUPAUL', 0.00, 'active', '', '2024-10-05 15:40:47', '', NULL),
+(68, 'tt', '', 'yyy', 0.00, 'active', 'drc', '2024-10-30 17:19:58', '', NULL),
+(69, 'tt', '', 'yyy', 0.00, 'active', 'drc', '2024-10-30 17:20:04', '', NULL),
+(71, 'tests', '', 'test', 0.00, 'active', 'drc', '2024-10-30 17:44:12', 'drc', '2024-11-01 13:07:52'),
+(72, 'Test Party', '', 'Bihar', 0.00, 'active', 'drc', '2024-11-01 13:07:40', '', NULL);
 
 -- --------------------------------------------------------
 
@@ -569,8 +590,9 @@ CREATE TABLE `user_details` (
 --
 
 INSERT INTO `user_details` (`user_id`, `username`, `password`, `full_name`, `user_role`, `is_active`) VALUES
-(1, 'admins', '21232f297a57a5a743894a0e4a801fc3', 'Administrator', 1, 'active'),
-(3, 'drc', 'a8f33deb6c41ca27be76f9c264951596', 'drc', 2, 'active');
+(1, 'admin', '21232f297a57a5a743894a0e4a801fc3', 'Administrator', 1, 'active'),
+(3, 'drc', 'a8f33deb6c41ca27be76f9c264951596', 'drc', 2, 'active'),
+(4, 'arghya', '002d55b9c313715119edaecfa26d9e4f', 'Soumyanjan Dey', 3, 'active');
 
 --
 -- Indexes for dumped tables
@@ -632,13 +654,13 @@ ALTER TABLE `user_details`
 -- AUTO_INCREMENT for table `company_ledger`
 --
 ALTER TABLE `company_ledger`
-  MODIFY `ledger_id` bigint(38) NOT NULL AUTO_INCREMENT;
+  MODIFY `ledger_id` bigint(38) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `company_list`
 --
 ALTER TABLE `company_list`
-  MODIFY `company_id` bigint(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `company_id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `gatepass`
@@ -650,31 +672,31 @@ ALTER TABLE `gatepass`
 -- AUTO_INCREMENT for table `goods_list`
 --
 ALTER TABLE `goods_list`
-  MODIFY `goods_id` bigint(38) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `goods_id` bigint(38) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `ledger`
 --
 ALTER TABLE `ledger`
-  MODIFY `ledger_id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=205;
+  MODIFY `ledger_id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=206;
 
 --
 -- AUTO_INCREMENT for table `master_role`
 --
 ALTER TABLE `master_role`
-  MODIFY `role_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `role_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `party_list`
 --
 ALTER TABLE `party_list`
-  MODIFY `party_id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=55;
+  MODIFY `party_id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=73;
 
 --
 -- AUTO_INCREMENT for table `user_details`
 --
 ALTER TABLE `user_details`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
